@@ -18,7 +18,7 @@
 
 @synthesize backgroundView = _backgroundView;
 @synthesize delegate = _delegate;
-@synthesize searchField = _searchField;
+// @synthesize searchField = _searchField;
 @synthesize textField = _textField;
 
 #pragma mark -
@@ -35,7 +35,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidChangeNotification object:self.searchField];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidChangeNotification object:self.searchField];
 }
 
 #pragma mark -
@@ -52,7 +52,7 @@
     [panel setBackgroundColor:[NSColor clearColor]];
     
     // Follow search string
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runSearch) name:NSControlTextDidChangeNotification object:self.searchField];
+//     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runSearch) name:NSControlTextDidChangeNotification object:self.searchField];
 }
 
 #pragma mark - Public accessors
@@ -104,7 +104,7 @@
     CGFloat panelX = statusX - NSMinX(panelRect);
     
     self.backgroundView.arrowX = panelX;
-    
+    /*
     NSRect searchRect = [self.searchField frame];
     searchRect.size.width = NSWidth([self.backgroundView bounds]) - SEARCH_INSET * 2;
     searchRect.origin.x = SEARCH_INSET;
@@ -119,12 +119,13 @@
         [self.searchField setFrame:searchRect];
         [self.searchField setHidden:NO];
     }
+    */
     
     NSRect textRect = [self.textField frame];
-    textRect.size.width = NSWidth([self.backgroundView bounds]) - SEARCH_INSET * 2;
-    textRect.origin.x = SEARCH_INSET;
-    textRect.size.height = NSHeight([self.backgroundView bounds]) - ARROW_HEIGHT - SEARCH_INSET * 3 - NSHeight(searchRect);
-    textRect.origin.y = SEARCH_INSET;
+    // textRect.size.width = NSWidth([self.backgroundView bounds]) - SEARCH_INSET * 2;
+    // textRect.origin.x = SEARCH_INSET;
+    // textRect.size.height = NSHeight([self.backgroundView bounds]) - ARROW_HEIGHT - SEARCH_INSET * 3 - NSHeight(searchRect);
+    // textRect.origin.y = SEARCH_INSET;
     
     if (NSIsEmptyRect(textRect))
     {
@@ -146,6 +147,7 @@
 
 - (void)runSearch
 {
+/*
     NSString *searchFormat = @"";
     NSString *searchString = [self.searchField stringValue];
     if ([searchString length] > 0)
@@ -154,6 +156,18 @@
     }
     NSString *searchRequest = [NSString stringWithFormat:searchFormat, searchString];
     [self.textField setStringValue:searchRequest];
+*/
+}
+
+/*
+- (void)controlTextDidEndEditing:(NSNotification *)aNotification
+{
+    NSLog(@"%@", aNotification);
+}
+*/
+- (IBAction)noteAction:(id)sender
+{
+    NSLog(@"%@", sender);
 }
 
 #pragma mark - Public methods
@@ -228,7 +242,7 @@
     [[panel animator] setAlphaValue:1];
     [NSAnimationContext endGrouping];
     
-    [panel performSelector:@selector(makeFirstResponder:) withObject:self.searchField afterDelay:openDuration];
+    [panel performSelector:@selector(makeFirstResponder:) withObject:self.textField afterDelay:openDuration];
 }
 
 - (void)closePanel
